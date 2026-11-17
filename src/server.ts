@@ -1,13 +1,13 @@
 import express, { type Application, type Request, type Response } from "express";
 import { Pool } from "pg";
+import config from "./config";
 const app:Application = express();
-const port = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 const pool=new Pool({
-  connectionString:"postgresql://neondb_owner:npg_nSsBUkC7b4ZD@ep-old-art-az5igo26-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=false&channel_binding=require"
+  connectionString:config.connection_string
 })
 
 const initDB=async()=>{
@@ -84,6 +84,12 @@ app.get('/api/v1/users/:id', async(req:Request, res:Response)=>{
   try {
     const {id}=req.params;
     const result=await pool.query(`SELECT * FROM users WHERE id=${id}`);
+    if(result.rowCount==0){
+      return res.status(404).json({
+            success:false,
+            message:"user dosen't exist",
+        });
+    }
     res.status(200).json({
             success:true,
             message:"user retrieved successfully",
@@ -111,6 +117,13 @@ app.put('/api/v1/users/:id', async(req:Request, res:Response)=>{
       updated_at=NOW()
       WHERE id=${id} RETURNING *
       `, [name??null, age??null, password??null]);
+
+    if(result.rowCount===0){
+      res.status(404).json({
+            success:false,
+            message:"user dosen't exist",
+        });
+    }
     res.status(200).json({
             success:true,
             message:"user updated successfully",
@@ -126,7 +139,33 @@ app.put('/api/v1/users/:id', async(req:Request, res:Response)=>{
 })
 
 
+app.delete('/api/v1/users/:id', async(req:Request, res:Response)=>{
+  try {
+    const {id}=req.params;
+    const result=await pool.query(`DELETE FROM users WHERE id=${id}`);
+    if(result.rowCount!=0){
+      res.status(200).json({
+            success:true,
+            message:"user deleted successfully",
+        });
+    }
+    else{
+      res.status(404).json({
+            success:false,
+            message:"user dosen't exist",
+        });
+    }
+  } catch (error:any) {
+    res.status(500).json({
+            success:false,
+            message:error?.message,
+            error:error
+        });
+  }
+})
 
-app.listen(port, () => {
-  console.log(`server is running on port ${port}`);
+
+
+app.listen(config.port, () => {
+  console.log(`server is running on port ${config.port}`);
 });
