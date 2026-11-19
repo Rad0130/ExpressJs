@@ -5,7 +5,8 @@ dotenv.config({path:path.join(process.cwd(),".env")});
 
 const config={
     port:process.env.PORT,
-    connection_string:process.env.DATABASE_URL as string
+    connection_string:process.env.DATABASE_URL as string,
+    secret_key:process.env.SECRET_KEY as string
 };
 
 export default config;
