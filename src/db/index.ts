@@ -13,8 +13,9 @@ export const initDB=async()=>{
         name VARCHAR(255),
         email VARCHAR(255) UNIQUE NOT NULL,
         age INT,
+        role VARCHAR(30) DEFAULT 'user',
         password VARCHAR(255) NOT NULL,
-
+        is_active BOOLEAN DEFAULT true,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
 
