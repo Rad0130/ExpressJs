@@ -92,3 +92,7 @@ Method:POST | Url:/api/v1/users | Time:1795217981535
 Method:GET | Url:/api/v1/users | Time:1795217990003
 Method:POST | Url:/api/v1/auth/login | Time:1795218016839
 Method:GET | Url:/api/v1/users | Time:1795218033619
+Method:GET | Url:/api/v1/users | Time:1795252628325
+Method:GET | Url:/api/v1/users | Time:1795252643823
+Method:GET | Url:/api/v1/users | Time:1795252656285
+Method:GET | Url:/favicon.ico | Time:1795252832624
