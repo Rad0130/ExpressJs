@@ -5,13 +5,14 @@ import { authRoute } from "./modules/auth/auth.route";
 import logger from "./middleware/logger";
 import globalErrorhandler from "./middleware/globalErrorHandler";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 const app:Application = express();
 
 const corsOption={
   origin:["http://localhost:3000"],
   optionsSuccessStatus:200
 }
-
+app.use(cookieParser());
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
